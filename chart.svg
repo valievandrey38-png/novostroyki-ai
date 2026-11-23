@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="670" viewBox="0 0 1000 670" font-family="Arial, Helvetica, sans-serif">
+<rect width="1000" height="670" fill="#ffffff"/>
+<text x="20" y="32" font-size="20" font-weight="700" fill="#1d2226">Цена «от» за м² в новостройках бизнес- и премиум-класса</text>
+<text x="20" y="54" font-size="13" fill="#5d6670">Источник: ЕРЗ.РФ, данные на 23.11.2026. Цвет — город, штриховка — премиум-класс.</text>
+<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="3" height="6" fill="#ffffff" fill-opacity=".35"/></pattern></defs>
+<line x1="300.0" y1="64" x2="300.0" y2="620" stroke="#e4e6e3"/>
+<text x="300.0" y="638" font-size="12" fill="#5d6670" text-anchor="middle">0 тыс.</text>
+<line x1="405.6" y1="64" x2="405.6" y2="620" stroke="#e4e6e3"/>
+<text x="405.6" y="638" font-size="12" fill="#5d6670" text-anchor="middle">250 тыс.</text>
+<line x1="511.1" y1="64" x2="511.1" y2="620" stroke="#e4e6e3"/>
+<text x="511.1" y="638" font-size="12" fill="#5d6670" text-anchor="middle">500 тыс.</text>
+<line x1="616.7" y1="64" x2="616.7" y2="620" stroke="#e4e6e3"/>
+<text x="616.7" y="638" font-size="12" fill="#5d6670" text-anchor="middle">750 тыс.</text>
+<line x1="722.2" y1="64" x2="722.2" y2="620" stroke="#e4e6e3"/>
+<text x="722.2" y="638" font-size="12" fill="#5d6670" text-anchor="middle">1000 тыс.</text>
+<line x1="827.8" y1="64" x2="827.8" y2="620" stroke="#e4e6e3"/>
+<text x="827.8" y="638" font-size="12" fill="#5d6670" text-anchor="middle">1250 тыс.</text>
+<text x="290" y="88" font-size="13" fill="#1d2226" text-anchor="end">Квартал РИДЗ · Краснодар</text>
+<rect x="300" y="70" width="49.3" height="26" rx="3" fill="#3f9a5a"/>
+<text x="357.3" y="88" font-size="13" fill="#1d2226">116 861 ₽</text>
+<text x="290" y="124" font-size="13" fill="#1d2226" text-anchor="end">Екатерининский парк · Краснодар</text>
+<rect x="300" y="106" width="78.1" height="26" rx="3" fill="#3f9a5a"/>
+<text x="386.1" y="124" font-size="13" fill="#1d2226">184 887 ₽</text>
+<text x="290" y="160" font-size="13" fill="#1d2226" text-anchor="end">Коллекция · Краснодар</text>
+<rect x="300" y="142" width="84.4" height="26" rx="3" fill="#3f9a5a"/>
+<text x="392.4" y="160" font-size="13" fill="#1d2226">199 951 ₽</text>
+<text x="290" y="196" font-size="13" fill="#1d2226" text-anchor="end">Патрики · Краснодар</text>
+<rect x="300" y="178" width="84.7" height="26" rx="3" fill="#3f9a5a"/>
+<text x="392.7" y="196" font-size="13" fill="#1d2226">200 506 ₽</text>
+<text x="290" y="232" font-size="13" fill="#1d2226" text-anchor="end">МЖК · Краснодар</text>
+<rect x="300" y="214" width="96.1" height="26" rx="3" fill="#3f9a5a"/>
+<text x="404.1" y="232" font-size="13" fill="#1d2226">227 700 ₽</text>
+<text x="290" y="268" font-size="13" fill="#1d2226" text-anchor="end">Отражение · Сочи</text>
+<rect x="300" y="250" width="114.0" height="26" rx="3" fill="#d9822b"/>
+<text x="422.0" y="268" font-size="13" fill="#1d2226">270 000 ₽</text>
+<text x="290" y="304" font-size="13" fill="#1d2226" text-anchor="end">Лестория · Сочи</text>
+<rect x="300" y="286" width="145.0" height="26" rx="3" fill="#d9822b"/>
+<text x="453.0" y="304" font-size="13" fill="#1d2226">343 342 ₽</text>
+<text x="290" y="340" font-size="13" fill="#1d2226" text-anchor="end">Светский лес · Сочи</text>
+<rect x="300" y="322" width="161.2" height="26" rx="3" fill="#d9822b"/>
+<text x="469.2" y="340" font-size="13" fill="#1d2226">381 759 ₽</text>
+<text x="290" y="376" font-size="13" fill="#1d2226" text-anchor="end">Квартал МОНС · Москва</text>
+<rect x="300" y="358" width="182.1" height="26" rx="3" fill="#3b6fb6"/>
+<text x="490.1" y="376" font-size="13" fill="#1d2226">431 307 ₽</text>
+<text x="290" y="412" font-size="13" fill="#1d2226" text-anchor="end">Шагал · Москва</text>
+<rect x="300" y="394" width="183.7" height="26" rx="3" fill="#3b6fb6"/>
+<text x="491.7" y="412" font-size="13" fill="#1d2226">434 985 ₽</text>
+<text x="290" y="448" font-size="13" fill="#1d2226" text-anchor="end">Дом на Зорге · Москва</text>
+<rect x="300" y="430" width="199.4" height="26" rx="3" fill="#3b6fb6"/>
+<text x="507.4" y="448" font-size="13" fill="#1d2226">472 179 ₽</text>
+<text x="290" y="484" font-size="13" fill="#1d2226" text-anchor="end">Река · Москва</text>
+<rect x="300" y="466" width="356.4" height="26" rx="3" fill="#3b6fb6"/>
+<rect x="300" y="466" width="356.4" height="26" rx="3" fill="url(#hatch)"/>
+<text x="664.4" y="484" font-size="13" fill="#1d2226">844 000 ₽</text>
+<text x="290" y="520" font-size="13" fill="#1d2226" text-anchor="end">Тишинский бульвар · Москва</text>
+<rect x="300" y="502" width="494.8" height="26" rx="3" fill="#3b6fb6"/>
+<rect x="300" y="502" width="494.8" height="26" rx="3" fill="url(#hatch)"/>
+<text x="802.8" y="520" font-size="13" fill="#1d2226">1 172 000 ₽</text>
+<text x="290" y="556" font-size="13" fill="#1d2226" text-anchor="end">Новая Волна (Volna Residence) · Сочи</text>
+<rect x="300" y="538" width="540.8" height="26" rx="3" fill="#d9822b"/>
+<rect x="300" y="538" width="540.8" height="26" rx="3" fill="url(#hatch)"/>
+<text x="848.8" y="556" font-size="13" fill="#1d2226">1 280 771 ₽</text>
+<text x="290" y="592" font-size="13" fill="#1d2226" text-anchor="end">Мандарин Гарден · Сочи</text>
+<rect x="300" y="574" width="570.0" height="26" rx="3" fill="#d9822b"/>
+<rect x="300" y="574" width="570.0" height="26" rx="3" fill="url(#hatch)"/>
+<text x="878.0" y="592" font-size="13" fill="#1d2226">1 350 000 ₽</text>
+<rect x="300" y="648" width="14" height="14" rx="2" fill="#3b6fb6"/><text x="320" y="660" font-size="13" fill="#1d2226">Москва</text>
+<rect x="430" y="648" width="14" height="14" rx="2" fill="#d9822b"/><text x="450" y="660" font-size="13" fill="#1d2226">Сочи</text>
+<rect x="560" y="648" width="14" height="14" rx="2" fill="#3f9a5a"/><text x="580" y="660" font-size="13" fill="#1d2226">Краснодар</text>
+</svg>
