@@ -4,53 +4,187 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Подбор ЖК по бюджету</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{ --bg:#f5f6f4; --card:#fff; --ink:#1d2226; --muted:#5d6670; --line:#dcdfdb; --accent:#245c58; --warn:#8a5a10; --warn-bg:#f6ecd9; }
+:root{
+  --bg:#f5f2ec; --card:#fff; --ink:#15130f; --muted:#7a736a; --line:#e7e1d7;
+  --gold:#c6a36b; --gold-ink:#8a6a37; --fit:#2f6b4f; --over:#a3622a; --over-bg:#f7ebde;
+  --serif:"Cormorant Garamond", Georgia, serif;
+  --sans:Inter, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
 *{ box-sizing:border-box; }
-body{ margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
-main{ max-width:760px; margin:0 auto; padding:32px 16px 64px; display:grid; gap:20px; }
-h1{ margin:0; font-size:28px; line-height:1.15; }
-.lead{ margin:0; color:var(--muted); }
-form{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; align-items:end; }
-label{ display:grid; gap:6px; font-size:14px; font-weight:600; }
-input, select{ font:inherit; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); width:100%; }
-button{ grid-column:1/-1; font:inherit; font-weight:700; padding:12px; border:0; border-radius:8px; background:var(--accent); color:#fff; cursor:pointer; }
-button:focus-visible, input:focus-visible, select:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
-@media (max-width:600px){ form{ grid-template-columns:1fr; } }
-.res{ display:grid; gap:12px; }
-.item{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; display:grid; gap:6px; }
-.item h2{ margin:0; font-size:18px; }
-.row{ display:flex; flex-wrap:wrap; gap:6px 16px; color:var(--muted); font-size:14px; }
-.price{ font-size:20px; font-weight:700; font-variant-numeric:tabular-nums; }
-.over{ border-color:var(--warn); }
-.tag{ display:inline-block; font-size:12px; font-weight:700; padding:2px 8px; border-radius:999px; background:var(--warn-bg); color:var(--warn); }
-.msg{ color:var(--muted); }
-small{ color:var(--muted); }
-a{ color:var(--accent); }
+html{ -webkit-font-smoothing:antialiased; }
+body{ margin:0; background:var(--bg); color:var(--ink); font:15px/1.55 var(--sans); }
+a{ color:inherit; }
+
+/* ---------- шапка с фото ---------- */
+.hero{ position:relative; color:#fff; overflow:hidden; background:#1b1a17;
+  aspect-ratio:var(--ratio,16/9); min-height:640px; width:100%;
+  display:flex; flex-direction:column; }
+.photo{ position:absolute; inset:0; background-size:cover; background-position:center; }
+.hero::before{ content:""; position:absolute; inset:0; z-index:1;
+  background:
+    linear-gradient(90deg, rgba(12,11,9,.78) 0%, rgba(12,11,9,.45) 38%, rgba(12,11,9,.08) 68%, rgba(12,11,9,.25) 100%),
+    linear-gradient(0deg, rgba(12,11,9,.55) 0%, rgba(12,11,9,0) 35%); }
+.top, .stage{ position:relative; z-index:2; width:100%; max-width:1200px; margin:0 auto; padding:0 32px; }
+.top{ display:flex; justify-content:space-between; align-items:center; padding-top:26px; font-size:12px; letter-spacing:.16em; text-transform:uppercase; }
+.brand{ font-weight:600; }
+.brand i{ display:inline-block; width:7px; height:7px; background:var(--gold); border-radius:50%; margin-right:10px; vertical-align:middle; }
+.top a{ text-decoration:none; opacity:.85; border-bottom:1px solid rgba(255,255,255,.4); padding-bottom:2px; }
+.top a:hover{ opacity:1; }
+.stage{ flex:1; display:grid; grid-template-columns:minmax(0,1fr) 420px; gap:56px; align-items:end; padding-bottom:56px; padding-top:40px; }
+.eyebrow{ font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); font-weight:600; margin:0 0 18px; }
+h1{ font-family:var(--serif); font-weight:500; font-size:clamp(48px,6.2vw,90px); line-height:.95; letter-spacing:-.01em; margin:0 0 22px; }
+h1 em{ font-style:italic; color:#f0dcb8; }
+.lead{ margin:0 0 34px; max-width:440px; font-size:16px; color:rgba(255,255,255,.82); }
+.facts{ display:flex; margin:0; padding:0; list-style:none; }
+.facts li{ padding:0 26px; border-left:1px solid rgba(255,255,255,.28); }
+.facts li:first-child{ padding-left:0; border-left:0; }
+.facts b{ display:block; font-family:var(--serif); font-size:34px; font-weight:500; line-height:1; margin-bottom:6px; }
+.facts span{ font-size:12px; color:rgba(255,255,255,.7); letter-spacing:.04em; }
+
+/* ---------- стеклянная панель ---------- */
+form{ background:rgba(18,17,14,.32); backdrop-filter:blur(22px) saturate(1.3); -webkit-backdrop-filter:blur(22px) saturate(1.3);
+  border:1px solid rgba(255,255,255,.22); border-radius:6px; padding:28px; display:grid; gap:26px;
+  box-shadow:0 30px 80px -30px rgba(0,0,0,.6); }
+.fl{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.65); margin-bottom:12px; display:flex; justify-content:space-between; align-items:baseline; }
+.fl output{ font-family:var(--serif); font-size:28px; letter-spacing:0; text-transform:none; color:#fff; font-weight:500; }
+.cities{ display:grid; grid-template-columns:repeat(3,1fr); border:0; margin:0; padding:0; border-bottom:1px solid rgba(255,255,255,.22); }
+.cities legend{ grid-column:1/-1; float:left; width:100%; padding:0; }
+.cities label{ cursor:pointer; position:relative; text-align:center; }
+.cities input{ position:absolute; opacity:0; pointer-events:none; }
+.cities span{ display:block; padding:6px 0 12px; font-size:15px; color:rgba(255,255,255,.62); transition:color .2s; }
+.cities span::after{ content:""; position:absolute; left:18%; right:18%; bottom:-1px; height:2px; background:var(--gold); transform:scaleX(0); transition:transform .25s; }
+.cities label:hover span{ color:#fff; }
+.cities input:checked + span{ color:#fff; font-weight:600; }
+.cities input:checked + span::after{ transform:scaleX(1); }
+.cities input:focus-visible + span{ outline:1px solid var(--gold); outline-offset:2px; }
+input[type=range]{ -webkit-appearance:none; appearance:none; width:100%; height:22px; background:transparent; margin:0; cursor:pointer; --p:30%; }
+input[type=range]::-webkit-slider-runnable-track{ height:2px; background:linear-gradient(90deg,#fff var(--p),rgba(255,255,255,.25) var(--p)); }
+input[type=range]::-moz-range-track{ height:2px; background:rgba(255,255,255,.25); }
+input[type=range]::-moz-range-progress{ height:2px; background:#fff; }
+input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:#fff; margin-top:-8px; box-shadow:0 0 0 5px rgba(255,255,255,.15), 0 2px 8px rgba(0,0,0,.35); }
+input[type=range]::-moz-range-thumb{ width:18px; height:18px; border:0; border-radius:50%; background:#fff; box-shadow:0 0 0 5px rgba(255,255,255,.15); }
+input[type=range]:focus-visible{ outline:1px solid var(--gold); outline-offset:6px; }
+.ticks{ display:flex; justify-content:space-between; font-size:11px; color:rgba(255,255,255,.5); margin-top:6px; }
+button{ font:600 12px/1 var(--sans); letter-spacing:.2em; text-transform:uppercase; padding:18px; border:0; border-radius:3px; background:var(--gold); color:#1d160b; cursor:pointer; transition:background .2s; }
+button:hover{ background:#d4b47f; }
+button:focus-visible{ outline:2px solid #fff; outline-offset:3px; }
+
+/* ---------- результаты: тёмный низ в тон шапки ---------- */
+body{ background:#12110e; }
+main{ max-width:1200px; margin:0 auto; padding:72px 32px 88px; color:#f3eee5; }
+.rhead{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:end; gap:12px 32px; margin-bottom:34px; border-bottom:1px solid rgba(255,255,255,.12); padding-bottom:24px; }
+.rhead h2{ font-family:var(--serif); font-weight:500; font-size:clamp(34px,4vw,50px); line-height:1; margin:0; }
+.rhead p{ margin:0; color:rgba(243,238,229,.6); max-width:420px; }
+.res{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; }
+.card{ position:relative; display:flex; flex-direction:column; gap:14px; padding:28px 26px 24px; text-decoration:none; color:inherit;
+  background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.1); border-radius:6px;
+  transition:transform .35s cubic-bezier(.2,.7,.2,1), border-color .3s, box-shadow .35s, background .3s; animation:rise .5s ease both; overflow:hidden; }
+.card::before{ content:""; position:absolute; inset:0; background:radial-gradient(120% 70% at 50% 0%, rgba(198,163,107,.18), transparent 60%); opacity:0; transition:opacity .35s; pointer-events:none; }
+.card:hover, .card:focus-visible{ transform:translateY(-6px); border-color:rgba(198,163,107,.65); box-shadow:0 30px 60px -28px rgba(0,0,0,.9), 0 0 0 1px rgba(198,163,107,.25); outline:none; }
+.card:hover::before, .card:focus-visible::before{ opacity:1; }
+.card:nth-child(2){ animation-delay:.07s } .card:nth-child(3){ animation-delay:.14s }
+@keyframes rise{ from{ opacity:0; transform:translateY(16px) } to{ opacity:1; transform:none } }
+@media (prefers-reduced-motion:reduce){ .card{ animation:none; transition:none } .card:hover{ transform:none } }
+.card.best{ border-color:rgba(198,163,107,.45); }
+.rank{ display:flex; justify-content:space-between; align-items:center; min-height:24px; }
+.rank b{ font-family:var(--serif); font-size:22px; font-weight:500; color:rgba(243,238,229,.45); transition:color .3s; }
+.card:hover .rank b{ color:var(--gold); }
+.tag{ font-size:10px; letter-spacing:.16em; text-transform:uppercase; padding:5px 9px; border-radius:2px; background:var(--gold); color:#1d160b; font-weight:600; }
+.tag.over{ background:rgba(214,140,74,.16); color:#e3a36a; }
+.card h3{ font-family:var(--serif); font-weight:600; font-size:32px; line-height:1.05; margin:0; }
+.sub{ margin:-6px 0 0; color:rgba(243,238,229,.55); font-size:14px; }
+.cost{ font-family:var(--serif); font-size:48px; line-height:1; font-weight:500; margin-top:8px; transition:color .3s; }
+.card:hover .cost{ color:#f0dcb8; }
+.cost small{ font-size:20px; color:rgba(243,238,229,.5); }
+.meter{ height:2px; background:rgba(255,255,255,.12); position:relative; }
+.meter i{ position:absolute; left:0; top:0; bottom:0; background:#7fc49c; transition:background .3s; }
+.over .meter i{ background:#e3a36a; }
+.left{ font-size:13px; color:#8fd0aa; font-weight:500; margin-top:-4px; }
+.over .left{ color:#e3a36a; }
+dl{ display:grid; grid-template-columns:auto 1fr; gap:8px 16px; margin:4px 0 0; padding-top:16px; border-top:1px solid rgba(255,255,255,.1); font-size:13px; }
+dt{ color:rgba(243,238,229,.5); }
+dd{ margin:0; text-align:right; font-weight:500; }
+.src{ margin-top:auto; padding-top:12px; display:flex; justify-content:space-between; align-items:center; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); font-weight:600; }
+.src span{ display:inline-grid; place-items:center; width:34px; height:34px; border-radius:50%; border:1px solid rgba(198,163,107,.5); font-size:15px; letter-spacing:0; transition:transform .35s, background .3s, color .3s; }
+.card:hover .src span{ transform:translateX(4px) rotate(-45deg); background:var(--gold); color:#1d160b; }
+.note{ margin:40px 0 0; color:rgba(243,238,229,.45); font-size:13px; max-width:720px; }
+.note a{ color:var(--gold); }
+
+@media (max-width:980px){
+  .hero{ aspect-ratio:auto; min-height:100svh; }
+  .stage{ grid-template-columns:1fr; gap:36px; align-items:start; }
+  .res{ grid-template-columns:1fr; }
+}
+@media (max-width:560px){
+  .top, .stage, main{ padding-left:16px; padding-right:16px; }
+  .facts li{ padding:0 16px; } .facts b{ font-size:28px; }
+  form{ padding:22px; }
+  .top a{ display:none; }
+}
 </style>
 </head>
 <body>
+<header class="hero">
+  <div class="photo" aria-hidden="true"></div>
+  <div class="top">
+    <span class="brand"><i></i>Подбор новостроек</span>
+    <a href="../">Таблица и выводы</a>
+  </div>
+  <div class="stage">
+    <div>
+      <p class="eyebrow">Бизнес и премиум · Сочи · Москва · Краснодар</p>
+      <h1>Какой ЖК<br><em>по карману?</em></h1>
+      <p class="lead">Укажите город, бюджет и площадь — подберём три жилых комплекса и посчитаем примерную стоимость квартиры.</p>
+      <ul class="facts">
+        <li><b>15</b><span>ЖК в базе</span></li>
+        <li><b>3</b><span>города</span></li>
+        <li><b id="d"></b><span>данные ЕРЗ.РФ</span></li>
+      </ul>
+    </div>
+    <form id="f">
+      <fieldset class="cities" id="city">
+        <legend class="fl">Город</legend>
+        <label><input type="radio" name="city" value="Сочи" checked><span>Сочи</span></label>
+        <label><input type="radio" name="city" value="Москва"><span>Москва</span></label>
+        <label><input type="radio" name="city" value="Краснодар"><span>Краснодар</span></label>
+      </fieldset>
+      <div>
+        <div class="fl"><label for="budget">Бюджет</label><output id="budgetOut"></output></div>
+        <input id="budget" type="range" min="5" max="150" step="0.5" value="25">
+        <div class="ticks"><span>5 млн</span><span>150 млн</span></div>
+      </div>
+      <div>
+        <div class="fl"><label for="area">Площадь</label><output id="areaOut"></output></div>
+        <input id="area" type="range" min="20" max="200" step="1" value="60">
+        <div class="ticks"><span>20 м²</span><span>200 м²</span></div>
+      </div>
+      <button type="submit">Подобрать</button>
+    </form>
+  </div>
+</header>
+
 <main>
-  <h1>Подбор ЖК по бюджету</h1>
-  <p class="lead">Введите город, бюджет и площадь — покажем 3 подходящих жилых комплекса бизнес- и премиум-класса из нашей таблицы и примерную стоимость квартиры.</p>
-
-  <form id="f">
-    <label>Город
-      <select id="city"><option>Сочи</option><option>Москва</option><option>Краснодар</option></select>
-    </label>
-    <label>Бюджет, млн ₽
-      <input id="budget" type="number" min="1" step="0.5" value="25" inputmode="decimal" required>
-    </label>
-    <label>Площадь, м²
-      <input id="area" type="number" min="15" step="1" value="60" inputmode="numeric" required>
-    </label>
-    <button type="submit">Подобрать</button>
-  </form>
-
+  <div class="rhead"><h2 id="rtitle"></h2><p id="rnote"></p></div>
   <div class="res" id="res" aria-live="polite"></div>
-
-  <small>Стоимость = цена «от» за м² × площадь. Это нижняя граница: реальная цена зависит от этажа, вида и отделки. Данные — ЕРЗ.РФ, <span id="d"></span>. <a href="../">Таблица и выводы</a></small>
+  <p class="note">Стоимость = цена «от» за м² × площадь. Это нижняя граница: реальная цена зависит от этажа, вида и отделки. Источник цен — реестр ЕРЗ.РФ, ссылка в каждой карточке. Фото — для иллюстрации. <a href="../">Таблица и выводы →</a></p>
 </main>
+<script>
+  // Фото шапки для каждого города; ratio — пропорции фото, чтобы оно было видно целиком.
+  window.CITY_BG = {
+    'Сочи':      { photo: 'img/sochi.jpg',     ratio: '1350/650' },
+    'Москва':    { photo: 'img/moscow.jpg',    ratio: '960/520' },
+    'Краснодар': { photo: 'img/krasnodar.jpg', ratio: '1100/695' }
+  };
+  window.setBg = function (city) {
+    var c = window.CITY_BG[city]; if (!c) return;
+    document.querySelector('.photo').style.backgroundImage = 'url(' + c.photo + ')';
+    document.querySelector('.hero').style.setProperty('--ratio', c.ratio);
+  };
+  for (var k in window.CITY_BG) { new Image().src = window.CITY_BG[k].photo; }
+</script>
 <script src="data.js"></script>
 <script src="podbor.js"></script>
 </body>

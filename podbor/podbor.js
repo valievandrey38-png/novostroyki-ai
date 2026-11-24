@@ -11,35 +11,55 @@ function podbor(list, city, budgetRub, area) {
 
 if (typeof document !== 'undefined') {
   var fmt = function (n) { return Math.round(n).toLocaleString('ru-RU'); };
-  var mln = function (n) { return (n / 1e6).toLocaleString('ru-RU', { maximumFractionDigits: 1 }) + ' млн ₽'; };
-  document.getElementById('d').textContent = window.ZHK_DATE.split('-').reverse().join('.');
-  var form = document.getElementById('f'), res = document.getElementById('res');
+  var num = function (n) { return (n / 1e6).toLocaleString('ru-RU', { maximumFractionDigits: 1 }); };
+  var mln = function (n) { return num(n) + ' млн ₽'; };
+  var $ = function (id) { return document.getElementById(id); };
+  var IN = { 'Сочи': 'в Сочи', 'Москва': 'в Москве', 'Краснодар': 'в Краснодаре' };
+  var WORD = function (n) { return n === 1 ? 'вариант' : (n < 5 ? 'варианта' : 'вариантов'); };
+  $('d').textContent = window.ZHK_DATE.split('-').reverse().slice(0, 2).join('.');
+  var form = $('f'), res = $('res');
+  var getCity = function () { return form.querySelector('input[name=city]:checked').value; };
+  function fill(el) { el.style.setProperty('--p', ((el.value - el.min) / (el.max - el.min) * 100) + '%'); }
+  function labels() {
+    $('budgetOut').textContent = parseFloat($('budget').value).toLocaleString('ru-RU') + ' млн ₽';
+    $('areaOut').textContent = $('area').value + ' м²';
+    fill($('budget')); fill($('area'));
+  }
   function run(e) {
     if (e) e.preventDefault();
-    var city = document.getElementById('city').value;
-    var budget = parseFloat(document.getElementById('budget').value) * 1e6;
-    var area = parseFloat(document.getElementById('area').value);
-    if (!(budget > 0) || !(area > 0)) { res.innerHTML = '<p class="msg">Введите бюджет и площадь.</p>'; return; }
+    labels();
+    var city = getCity();
+    if (window.setBg) window.setBg(city);
+    var budget = parseFloat($('budget').value) * 1e6;
+    var area = parseFloat($('area').value);
     var out = podbor(window.ZHK, city, budget, area);
     var fits = out.filter(function (z) { return !z.over; }).length;
-    var head = fits === 0
-      ? '<p class="msg">В бюджет ' + mln(budget) + ' за ' + area + ' м² в г. ' + city + ' ничего не входит. Ближайшие варианты:</p>'
-      : '<p class="msg">Подходит ' + fits + ' из ' + out.length + '. Сверху — самые близкие к бюджету.</p>';
-    res.innerHTML = head + out.map(function (z) {
-      return '<article class="item' + (z.over ? ' over' : '') + '">' +
-        (z.over ? '<span class="tag">Дороже бюджета на ' + mln(z.cost - budget) + '</span>' : '') +
-        '<h2>' + z.name + '</h2>' +
-        '<div class="price">≈ ' + mln(z.cost) + '</div>' +
-        '<div class="row"><span>' + z.class + '</span><span>' + z.dev + '</span><span>' + z.district + '</span><span>сдача: ' + z.deadline + '</span></div>' +
-        '<div class="row"><span>от ' + fmt(z.ppm) + ' ₽/м²</span><a href="' + z.src + '" target="_blank" rel="noopener">источник</a></div>' +
-        '</article>';
+    $('rtitle').textContent = fits ? fits + ' ' + WORD(fits) + ' ' + IN[city] : 'Ничего не входит в бюджет';
+    $('rnote').textContent = fits
+      ? 'Квартира ' + area + ' м² в пределах ' + mln(budget) + '. Первым — комплекс, ближе всего к вашему бюджету.'
+      : 'За ' + mln(budget) + ' квартира ' + area + ' м² ' + IN[city] + ' не найдётся. Показываем ближайшие варианты.';
+    res.innerHTML = out.map(function (z, i) {
+      var pct = Math.min(100, Math.round(z.cost / budget * 100));
+      var tag = z.over ? '<span class="tag over">Выше бюджета</span>' : (i === 0 ? '<span class="tag">Лучшее совпадение</span>' : '');
+      var left = z.over ? 'Дороже на ' + mln(z.cost - budget) : 'Остаётся ' + mln(budget - z.cost);
+      return '<a class="card' + (z.over ? ' over' : (i === 0 ? ' best' : '')) + '" href="' + z.src + '" target="_blank" rel="noopener" aria-label="' + z.name + ' — открыть на ЕРЗ">' +
+        '<div class="rank"><b>0' + (i + 1) + '</b>' + tag + '</div>' +
+        '<h3>' + z.name + '</h3>' +
+        '<p class="sub">' + z.dev + ' · ' + z.district + '</p>' +
+        '<div class="cost">≈ ' + num(z.cost) + ' <small>млн ₽</small></div>' +
+        '<div class="meter" title="' + pct + '% бюджета"><i style="width:' + pct + '%"></i></div>' +
+        '<div class="left">' + left + '</div>' +
+        '<dl><dt>Класс</dt><dd>' + z.class + '</dd><dt>Сдача</dt><dd>' + z.deadline + '</dd><dt>Цена от</dt><dd>' + fmt(z.ppm) + ' ₽/м²</dd></dl>' +
+        '<div class="src">Смотреть на ЕРЗ <span>→</span></div>' +
+        '</a>';
     }).join('');
   }
   var q = new URLSearchParams(location.search);
-  if (q.get('city')) document.getElementById('city').value = q.get('city');
-  if (q.get('budget')) document.getElementById('budget').value = q.get('budget');
-  if (q.get('area')) document.getElementById('area').value = q.get('area');
+  if (q.get('city')) { var r = form.querySelector('input[name=city][value="' + q.get('city') + '"]'); if (r) r.checked = true; }
+  if (q.get('budget')) $('budget').value = q.get('budget');
+  if (q.get('area')) $('area').value = q.get('area');
   form.addEventListener('submit', run);
+  form.addEventListener('input', run);
   run();
 }
 
